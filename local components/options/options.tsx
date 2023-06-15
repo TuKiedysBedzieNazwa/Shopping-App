@@ -1,27 +1,36 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Alert } from "react-native";
+import { ArrowBigLeftDash } from "lucide-react-native";
 import {
-    View,
-    Alert,
-    Text
-} from "react-native";
-import { ScrollView } from "../../components/core";
-import {
-    Switch,
-    Button
+    ScrollView,
+    Text,
+    Button,
+    Center,
+    Box
 } from '../../components/core';
 
 import { COLORMODES } from "@dank-style/react/lib/typescript/types";
 import { OptionsProps } from "../../types";
-import { ArrowBigLeftDash } from "lucide-react-native";
 
+
+
+interface testProp {
+    width: number | undefined,
+    height: number | undefined,
+    uri: string | undefined
+}
 
 function Options({ navigation, route }: OptionsProps): JSX.Element {
+
+    const [test, setTest] = useState<testProp>();
+    const [string, setString] = useState<string>();
+
     return(
         <ScrollView>
             <Button variant='outline'
                 position='absolute'
                 top={20}
-                left={30}
+                left={25}
                 w={45}
                 h={45}
                 zIndex={1}
@@ -29,13 +38,50 @@ function Options({ navigation, route }: OptionsProps): JSX.Element {
             >
                 <ArrowBigLeftDash color="black" />
             </Button>
+            <Text
+                textAlign="center"
+                size='xl'
+                mt={20}
+            >
+                Opcji nie ma,{'\n'}
+                może kiedyś będą
+            </Text>
 
-            <Text>
-                Options here {'\n'}
-            </Text>
-            <Text>
-                {JSON.stringify(route, null, 2)}
-            </Text>
+            <Box display='flex'
+                alignItems="center"
+                justifyContent="center"
+                h={680}
+                w='100%'
+            >
+                {/* <Button onPress={() => {
+                        setTest({
+                            width: 1,
+                            height: 1,
+                            uri: undefined
+                        });
+                    }}
+                >
+                    <Button.Text>
+                        set
+                    </Button.Text>
+                </Button>
+
+                <Button onPress={() => {
+                        setString(test!.uri);
+                    }}
+                    mt={15}
+                >
+                    <Button.Text>
+                        set String
+                    </Button.Text>
+                </Button> */}
+                <Text>
+                    {JSON.stringify(test, null, 2)}
+                    {'\n'}
+                    {JSON.stringify(string, null, 2)}
+                </Text>
+            </Box>
+
 
         </ScrollView>
     )

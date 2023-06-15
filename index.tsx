@@ -9,55 +9,21 @@ import {
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { GluestackUIProvider } from './components';
+import { realmContext } from './local components/realm';
 import { config } from './gluestack-ui.config';
+import { GluestackUIProvider } from './components';
 import App from './App';
 import Options from './local components/options/options';
+import ProductView from './local components/Product/ProductView';
 
-import {name as appName} from './app.json';
+import { name as appName } from './app.json';
 import { COLORMODES } from '@dank-style/react/lib/typescript/types';
 import { RootNativeStackParamList } from './types';
 
 
 
-
-import Realm from 'realm';
-import { createRealmContext } from '@realm/react';
-
-class Test extends Realm.Object<Test>{
-
-    _id!: Realm.BSON.ObjectId;
-    name!: string;
-    
-    static schema = {
-        name: 'Test',
-        properties: {
-            _id: 'objectId',
-            name: 'string',
-        },
-        primaryKey: '_id',
-    };
-}
-
-
-const realmConfig: Realm.Configuration = {
-    schema: [Test]
-}
-
-const {RealmProvider, useRealm, useObject, useQuery} = createRealmContext(realmConfig);
-
-
-
-
-
-
-
-
-
-
-
-
 const Stack = createNativeStackNavigator<RootNativeStackParamList>();
+const { RealmProvider } = realmContext;
 
 function Navigation(): JSX.Element {
 
@@ -82,6 +48,9 @@ function Navigation(): JSX.Element {
                             // initialParams={{
                             //     test: useRealm
                             // }}
+                        />
+                        <Stack.Screen name='ProductView'
+                            component={ProductView}
                         />
                     </Stack.Navigator>
                 </NavigationContainer>

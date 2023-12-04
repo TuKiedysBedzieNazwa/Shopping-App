@@ -378,7 +378,7 @@ export default styled(
           },
         },
         outline: {
-          borderWidth: '$1',
+          // borderWidth: '$4',
         },
         solid: {},
       },

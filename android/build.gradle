@@ -15,7 +15,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:7.3.1")
+        classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
     }
 }
@@ -35,3 +35,9 @@ allprojects {
       maven { url "https://www.jitpack.io" }
     }
 }
+
+//added
+project.ext.react = [
+    enableHermes: false,
+    entryFile: "index.tsx",
+]

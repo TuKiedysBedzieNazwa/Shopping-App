@@ -7,115 +7,128 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-  Appearance,
-  View,
-  Pressable
-} from 'react-native';
-import {
   ScrollView,
   Button,
   Box,
-  Image,
-  Center,
-  Text
+  Center
 } from './components/core';
-import { Settings2 } from 'lucide-react-native';
+import { Plus, ShoppingBasket } from 'lucide-react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
-import { realmContext, Products } from './local components/realm';
-import Shop from './local components/bottom shop/shop';
+import { realmContext, Products } from './localComponents/realm';
+import NavBar from './localComponents/navBar';
+import RenderProducts from './localComponents/renderProducts';
+import ProductAddModal from './localComponents/bottomShop/productAddModal';
+import ShoppingBasketModal from './localComponents/bottomShop/shoppingBasketModal';
 
 import { HomeProps } from './types';
 
+
+const cloneDB = (products: Realm.Results<Products>): number[] => {
+  const arr: number[] = [];
+  for (const product of products) {
+    arr[product._id] = product.toBuy;
+  }
+  return arr
+}
 
 
 const { useQuery } = realmContext;
 
 function App({ navigation, route }: HomeProps): JSX.Element {
 
-  const products = useQuery(Products);
+  const [filter, setFilter] = useState<string>("name");
 
-  const [pressIn, setPressIn] = useState<{[key: string]: number}>({});
-
-  const map = new Map();
-  for(let i=0; i< products.length; i++){
-    map.set(products[0]._id, 0);
-  }
+  const DBproducts = useQuery(Products).sorted(filter, false);
+  const [values, setValues] = useState<number[]>(cloneDB(DBproducts));
 
   useEffect(() => {
-    console.log(map);
-  }, []);
+    setValues(cloneDB(DBproducts));
+  }, [DBproducts.length]);
+
+  const [shopVisible, setShopVisible] = useState<boolean>(false);
+  const [addVisible, setAddVisible] = useState<boolean>(false);
 
   return (
     <>
-      <Box position='absolute'
-        top={20}
-        right={25}
-        zIndex={1}
-      >
-        <Button variant='outline'
-          w={45}
-          h={45}
-          onPress={() => navigation.navigate('Options')}
-        >
-          <Settings2 color='black' size={26} />
-        </Button>
-      </Box>
-
+      <NavBar
+        navigation={navigation}
+        filter={filter}
+        setFilter={setFilter}
+      />
       <ScrollView>
-        <Box display='flex'
-          mt={100}
-          m={10}
-          flexDirection='row'
-          flexWrap='wrap'
-          justifyContent='space-evenly'
-        >
-          {
-            products.map(product => {
+        <Box>
 
-              return (
-              <Pressable key={product._id}
-                // onPressIn={() => setPressIn(-15)}
-                onLongPress={() => navigation.navigate('ProductView', {
-                  product: product
-                })}
-                // onPressOut={() => setPressIn(0)}
-              >
-                <Box w={100}
-                  h={100}
-                  borderRadius={5}
-                  bg='$gray200'
-                  m={10}
-                  overflow='hidden'
-                  initial={{
-                    x: -50,
-                    opacity: 0
-                  }}
-                  animate={{
-                    opacity: 1,
-                    x: 0,
-                    // y: pressIn
-                  }}
-                  transition={{
-                    type: 'spring',
-                    // delay: pressIn === 1 ? 400 + product._id * 50 : 100,
-                    stiffnes: 1000
-                  }}
-                >
-                  <Image w={100}
-                    h={100}
-                    source={{
-                      uri: product.image
-                    }}
-                  />
-                </Box>
-              </Pressable>
-            )})
-          }
         </Box>
-
+        <RenderProducts
+          products={DBproducts}
+          navigation={navigation}
+          route={route}
+          values={values}
+          setValues={setValues}
+        />
       </ScrollView>
 
-      <Shop />
+      <Box position='absolute'
+        bottom={0}
+        left={0}
+        right={0}
+      >
+        <Center flexDirection='row'
+          w='$full'
+          h='$24'
+        >
+
+          <LinearGradient colors={["#6712e3", "#cd87aa"]}
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 1}}
+            style={{borderRadius: 8}}
+          >
+            <Button onPress={() => setShopVisible(true)}
+              bg="transparent"
+              w={80}
+              h={55}
+              flexDirection='column'
+            >
+              <ShoppingBasket size={30} color="#fff"/>
+              <Box mt={5}
+                w={30}
+                h={3}
+                bg="white"
+                borderRadius="$full"
+              />
+            </Button>
+          </LinearGradient>
+
+          <Button onPress={() => setAddVisible(true)}
+            ml={30}
+            variant='outline'
+            bg="$white"
+            w={80}
+            h={55}
+            flexDirection='column'
+          >
+            <Plus color='#6712e3' size={30} strokeWidth={2.8} />
+            <Box mt={5}
+              w={30}
+              h={3}
+              bg="#8512e3"
+              borderRadius="$full"
+              />
+          </Button>
+
+        </Center>
+        <ProductAddModal products={DBproducts}
+          visible={addVisible}
+          setVisible={setAddVisible}
+        />
+        <ShoppingBasketModal products={DBproducts}
+          visible={shopVisible}
+          setVisible={setShopVisible}
+          values={values}
+          setValues={setValues}
+        />
+      </Box>
     </>
   );
 }

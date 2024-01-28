@@ -30,7 +30,7 @@ function ErrorMessageModal({ visible, setVisible }: props): JSX.Element {
                 mx={30}
             >
                 <Text style={{textAlign: 'center', color: 'white'}}>
-                    Nazwa, Opis i zdjęcie nie mogą być puste
+                    Nazwa zdjęcie nie mogą być puste
                 </Text>
                 <Center>
                     <Button onPress={() => setVisible(false)}

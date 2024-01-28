@@ -38,7 +38,7 @@ function ProductAddModal({ products, visible, setVisible }: ProductAddModalProps
             height: 400,
             cropping: true
         }).then(image => { setImage(image)
-        }).catch(err => Alert.alert('', JSON.stringify(err, null, 2)));
+        }).catch(err => {});
     }
 
     const [errorVisible, setErrorVisible] = useState<boolean>(false);
@@ -50,10 +50,10 @@ function ProductAddModal({ products, visible, setVisible }: ProductAddModalProps
 
     const addProduct = (): void => {
 
-        if(name && describe && image){
+        if(name && image){
             realm.write(() => {
                 realm.create('Products', {
-                    _id: products[0] ? products[products.length - 1]._id + 1 : 0,
+                    _id: products && products[0] ? products[products.length - 1]._id + 1 : 0,
                     name: name,
                     describe: describe,
                     date: new Date().getTime(),
@@ -99,7 +99,7 @@ function ProductAddModal({ products, visible, setVisible }: ProductAddModalProps
             borderRadius={10}
             p={10}
         >
-            <Center 
+            <Center
                 mx={10}
             >
                 <Text size='2xl'>

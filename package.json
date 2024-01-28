@@ -1,7 +1,7 @@
 {
   "name": "shoppingapp",
   "author": "Dominik Kalicun",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -31,6 +31,7 @@
     "lucide-react-native": "^0.261.0",
     "react": "18.2.0",
     "react-native": "0.72.4",
+    "react-native-fs": "^2.20.0",
     "react-native-image-crop-picker": "^0.40.0",
     "react-native-linear-gradient": "^2.8.2",
     "react-native-modal": "^13.0.1",

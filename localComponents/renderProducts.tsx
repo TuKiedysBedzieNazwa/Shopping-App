@@ -115,6 +115,7 @@ export default function RenderProducts({ products, navigation, route, values, se
                                 opacity: 0
                             }}
                             animate={{
+                                // @ts-ignore
                                 opacity: 1,
                                 x: 0,
                                 y: pressIn[product._id]

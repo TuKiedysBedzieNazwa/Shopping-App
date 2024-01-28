@@ -118,7 +118,7 @@ function ShoppingBasketModal({ products, visible, setVisible, values, setValues 
                                                 opacity: 0
                                             }}
                                             animate={{
-                                                // @ts-ingore
+                                                // @ts-ignore
                                                 opacity: areBought[index] ? 0.6 : 0
                                             }}
                                         />
@@ -130,7 +130,7 @@ function ShoppingBasketModal({ products, visible, setVisible, values, setValues 
                                                 y: 0
                                             }}
                                             animate={{
-                                                // @ts-ingore
+                                                // @ts-ignore
                                                 y: areBought[index] ? 0 : 75
                                             }}
                                             transition={{

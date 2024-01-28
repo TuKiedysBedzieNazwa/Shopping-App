@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import fs from "react-native-fs";
 import {
     Button,
     Box,
@@ -73,6 +73,11 @@ function ProductView({ navigation, route }: ProductViewProps): JSX.Element {
     const realm = useRealm();
 
     const deleteProduct = (): void => {
+        fs.exists(route.params.product.image.slice(7)).then(
+            async(exists) => {
+                if(exists) await fs.unlink(route.params.product.image.slice(7));;
+            }
+        )
         realm.write(() => {
             realm.delete(route.params.product);
         });
@@ -159,10 +164,6 @@ function ProductView({ navigation, route }: ProductViewProps): JSX.Element {
                 </Button>
 
             </Center>
-
-            {/* <Text size="xs" lineHeight={13}>
-                {JSON.stringify(route, null, 2)}
-            </Text> */}
         </Box>
     )
 }
